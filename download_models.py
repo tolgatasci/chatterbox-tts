@@ -2,10 +2,6 @@
 """
 Pre-download Chatterbox models during Docker build.
 This ensures models are baked into the image for fast cold starts.
-
-Models downloaded:
-- Standard (500M): English with emotion control
-- Multilingual (500M): 23+ languages
 """
 
 import os
@@ -31,29 +27,18 @@ def download_models():
             device = "cpu"
             print("CUDA not available, using CPU for download")
 
-        # ─── Download Standard model ───
-        print("\n[1/2] Downloading Chatterbox Standard model (500M)...")
-        print("      - English language")
+        # Download Standard model
+        print("\n[1/1] Downloading Chatterbox Standard model (500M)...")
+        print("      - Supports all languages via text input")
         print("      - Emotion control (exaggeration, cfg_weight)")
         from chatterbox.tts import ChatterboxTTS
-        standard_model = ChatterboxTTS.from_pretrained(device="cpu")
-        del standard_model
+        model = ChatterboxTTS.from_pretrained(device="cpu")
+        del model
         print("✓ Standard model downloaded successfully!")
 
-        # ─── Download Multilingual model ───
-        print("\n[2/2] Downloading Chatterbox Multilingual model (500M)...")
-        print("      - 23 languages: ar, da, de, el, en, es, fi, fr, he, hi,")
-        print("                      it, ja, ko, ms, nl, no, pl, pt, ru, sv, sw, tr, zh")
-        multilingual_model = ChatterboxTTS.from_pretrained(
-            device="cpu",
-            model_id="ResembleAI/chatterbox-multilingual"
-        )
-        del multilingual_model
-        print("✓ Multilingual model downloaded successfully!")
-
-        # ─── Summary ───
+        # Summary
         print("\n" + "=" * 60)
-        print("All models downloaded successfully!")
+        print("Model downloaded successfully!")
         print("=" * 60)
         print("\nModels cached in: /models")
 
@@ -64,7 +49,7 @@ def download_models():
                 filepath = os.path.join(root, file)
                 size_mb = os.path.getsize(filepath) / (1024 * 1024)
                 total_size += size_mb
-                if size_mb > 10:  # Only show large files
+                if size_mb > 10:
                     print(f"  {filepath} ({size_mb:.1f} MB)")
 
         print(f"\nTotal size: {total_size:.1f} MB")

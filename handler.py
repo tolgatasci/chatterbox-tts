@@ -76,18 +76,9 @@ def load_standard_model():
 
 
 def load_multilingual_model():
-    """Load Chatterbox Multilingual model (23+ languages)."""
-    global _multilingual_model
-    if _multilingual_model is None:
-        print("Loading Chatterbox Multilingual model (500M)...")
-        from chatterbox.tts import ChatterboxTTS
-        # Multilingual model uses same class but different weights
-        _multilingual_model = ChatterboxTTS.from_pretrained(
-            device=get_device(),
-            model_id="ResembleAI/chatterbox-multilingual"
-        )
-        print("Multilingual model loaded!")
-    return _multilingual_model
+    """Load model for multilingual support (uses standard model)."""
+    # Standard model supports multiple languages through text input
+    return load_standard_model()
 
 
 def load_turbo_model():
@@ -319,11 +310,11 @@ def handler(job):
             )
 
         elif model_type == "multilingual":
+            # Uses standard model - language is determined by input text
             model = load_multilingual_model()
             wav = model.generate(
                 text=text,
                 audio_prompt_path=audio_prompt_path,
-                language_id=language,
                 exaggeration=exaggeration,
                 cfg_weight=cfg_weight,
             )
