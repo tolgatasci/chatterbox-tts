@@ -1,0 +1,16 @@
+# Chatterbox TTS RunPod Worker Requirements
+# Note: These are installed in Dockerfile, this file is for reference
+
+# PyTorch with CUDA 12.1
+torch==2.3.0
+torchaudio==2.3.0
+
+# Chatterbox TTS
+chatterbox-tts==0.1.2
+
+# RunPod SDK
+runpod==1.7.0
+
+# Utilities
+requests==2.31.0
+numpy==1.26.4
