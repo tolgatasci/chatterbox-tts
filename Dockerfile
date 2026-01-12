@@ -1,7 +1,7 @@
 # Chatterbox TTS RunPod Worker
 # GPU version for RunPod Serverless
 
-FROM runpod/pytorch:2.2.0-py3.10-cuda12.1.1-devel-ubuntu22.04
+FROM runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
@@ -13,14 +13,13 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     libsndfile1 \
     git \
-    wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Install torchaudio (matching PyTorch version)
-RUN pip install torchaudio==2.2.0
+# Install compatible torchaudio
+RUN pip install torchaudio==2.4.0
 
 # Install Chatterbox TTS
 RUN pip install chatterbox-tts
